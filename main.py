@@ -3,6 +3,7 @@
 
 """Example: A Simple class to get & read FaceDetected Events"""
 
+from cgi import test
 import qi
 import time
 import sys
@@ -37,13 +38,18 @@ class HumanGreeter(object):
 		self.got_face = False
 
 		self.people_detection = session.service("ALPeoplePerception")
+		# pointing detection
+		self.tracker_service = session.service("ALTrackerProxy")
 
 	def on_just_arrived(self, value):
 		"""
 		Callback for event JustArrived.
 		"""
+		# print(self.memory.getData("PeoplePerception/Person/" + str(value) + "/PositionInTorsoFrame"))
+		test_data = self.memory.getData("PeoplePerception/PeopleDetected")
+		print(test_data[2])
+		# print(self.memory.getData("FaceDetected/CameraPose_InTorsoFrame"))
 		self.tts.say("HUMAN " + str(value) + " JUST ARRIVED")
-		print()
 
 	def on_just_left(self, value):
 		"""
