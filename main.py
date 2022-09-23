@@ -39,7 +39,7 @@ class HumanGreeter(object):
 
 		self.people_detection = session.service("ALPeoplePerception")
 		# pointing detection
-		self.tracker_service = session.service("ALTrackerProxy")
+		# self.tracker_service = session.service("ALTrackerProxy")
 
 	def on_just_arrived(self, value):
 		"""
