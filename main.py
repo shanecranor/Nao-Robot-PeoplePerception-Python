@@ -36,7 +36,7 @@ class HumanGreeter(object):
 		self.face_detection = session.service("ALFaceDetection")
 		self.face_detection.subscribe("HumanGreeter")
 		self.got_face = False
-
+		self.tracker = session.service("ALTracker")
 		self.people_detection = session.service("ALPeoplePerception")
 		# pointing detection
 		# self.tracker_service = session.service("ALTrackerProxy")
@@ -47,7 +47,13 @@ class HumanGreeter(object):
 		"""
 		# print(self.memory.getData("PeoplePerception/Person/" + str(value) + "/PositionInTorsoFrame"))
 		test_data = self.memory.getData("PeoplePerception/PeopleDetected")
-		print(test_data[2])
+		print(test_data[2][:3])
+		self.tracker.registerTarget("People", value)
+		self.tracker.track("People")
+		target_pos = self.tracker.getTargetPosition(0)
+		print(target_pos)
+		self.tracker.pointAt("LArm", target_pos, 0, 1.0)
+		# self.tracker.pointAt("test_data[2][:3], 0, 1.0, False)
 		# print(self.memory.getData("FaceDetected/CameraPose_InTorsoFrame"))
 		self.tts.say("HUMAN " + str(value) + " JUST ARRIVED")
 
@@ -55,6 +61,10 @@ class HumanGreeter(object):
 		"""
 		Callback for event JustArrived.
 		"""
+		self.tracker.registerTarget("People", value)
+		self.tracker.track("People")
+		target_pos = self.tracker.getTargetPosition(0)
+		self.tracker.lookAt(target_pos, 1.0, False)
 		self.tts.say("HUMAN " + str(value) + " JUST LEFT")
 	# def on_human_tracked(self, value):
 	# 	"""
@@ -103,7 +113,7 @@ class HumanGreeter(object):
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
-	parser.add_argument("--ip", type=str, default="138.67.239.102",
+	parser.add_argument("--ip", type=str, default="138.67.229.132",
 						help="Robot IP address. On robot or Local Naoqi: use '127.0.0.1'.")
 	parser.add_argument("--port", type=int, default=9559,
 						help="Naoqi port number")

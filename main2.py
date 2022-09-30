@@ -25,7 +25,7 @@ def main(session, faceSize):
     targetName = "Face"
     faceWidth = faceSize
     tracker_service.registerTarget(targetName, faceWidth)
-
+    # tracker_service.setMode("None")
     # Then, start tracker.
     tracker_service.track(targetName)
 
@@ -50,7 +50,7 @@ def main(session, faceSize):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--ip", type=str, default="138.67.239.102",
+    parser.add_argument("--ip", type=str, default="138.67.229.132",
                         help="Robot IP address. On robot or Local Naoqi: use '127.0.0.1'.")
     parser.add_argument("--port", type=int, default=9559,
                         help="Naoqi port number")
